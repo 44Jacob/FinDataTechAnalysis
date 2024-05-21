@@ -1,66 +1,70 @@
 const init = async () => {
-    let stock_data = await ( await fetch('/api/v1.0/stock_data')).json()
+  sentiment = await (await fetch('/api/v1.0/stock_sentiment_score')).json()
+  stock_hist = await (await fetch('/api/v1.0/stock_history')).json()
 
-    console.log(stock_data);
+  console.log(sentiment, stock_hist);
 
-    document.getElementById('stocks').innerHTML = '';
-    Object.keys(stock_data).forEach(stock => {
-      document.getElementById('stocks').innerHTML += `<h3>${stock}</h3>`
-    })
+  tickers = Object.values(sentiment.index);
+  y_values = Object.values(sentiment['Average Sentiment Score'])
 
-var trace1 = {
-  x: Object.keys(stock_data),
-  y: Object.values(stock_data),
-  type: 'bar',
-  text:Object.values(stock_data).map(x => Math.round(x*100)/100),
-  textposition: 'auto',
-  hoverinfo: 'none',
-  marker: {
-    color: 'rgb(158,202,225)',
-    opacity: 0.6,
-    line: {
-      color: 'rgb(8,48,107)',
-      width: 1.5
+  document.getElementById('stocks').innerHTML = '';
+  tickers.forEach(stock => {
+    document.getElementById('stocks').innerHTML += `<h3>${stock}</h3>`
+  })
+
+  // Sentiment
+  var trace1 = {
+    x: tickers,
+    y: y_values,
+    type: 'bar',
+    text: y_values.map(x => Math.round(x * 100) / 100),
+    textposition: 'auto',
+    hoverinfo: 'none',
+    marker: {
+      color: 'rgb(158,202,225)',
+      opacity: 0.6,
+      line: {
+        color: 'rgb(8,48,107)',
+        width: 1.5
+      }
     }
-  }
-};
+  };
 
-var data = [trace1];
+  var data = [trace1];
 
-var layout = {
-  title: '<b>Average Sentiment Report</b>',
-  barmode: 'stack'
-};
+  var layout = {
+    title: '<b>Average Sentiment Report</b>',
+    barmode: 'stack'
+  };
 
-Plotly.newPlot('chart01', data, layout);
+  Plotly.newPlot('chart01', data, layout);
 
-var trace1 = {
-  x: [1, 2, 3, 4],
-  y: [10, 15, 13, 17],
-  type: 'scatter'
-};
+  // History
+  data = tickers.map(x => (
+    {
+      x: stock_hist.filter(obj => obj.Ticker == x).map(ticker => ticker.Date),
+      y: stock_hist.filter(obj => obj.Ticker == x).map(ticker => ticker.Close),
+      name: x,
+      type: 'scatter'
+    }
+  ))
 
-var trace2 = {
-  x: [1, 2, 3, 4],
-  y: [16, 5, 11, 9],
-  type: 'scatter'
-};
-
-var data = [trace1, trace2];
-
-Plotly.newPlot('chart02', data);
+  Plotly.newPlot('chart02', data, { width: '100%' });
 
 
 };
 
 init();
 
-const stockSel = async () => {
-  let stocks = JSON.stringify(document.getElementById('tickers').value.split(','));
-  let start = document.getElementById('start').value;
-  let end = document.getElementById('end').value;
+async function stockSel() {
+  let selections = document.getElementById('selections');
+  let start = document.getElementById('start');
+  let end = document.getElementById('end');
 
-  console.log(stocks);
-  await fetch(`/api/v1.0/load_data/${stocks}`);
+  if (!selections.value || !start.value || !end.value) { return alert('Please fill all fields') };
+
+  let stocks = JSON.stringify(document.getElementById('selections').value.split(','));
+
+  await fetch(`/api/v1.0/load_data/${stocks}/${start.value}/${end.value}`);
   window.location.reload();
-}
+};

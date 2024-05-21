@@ -17,16 +17,30 @@ app = Flask(__name__)
 def homepage():
     return render_template('index.html')
 
-@app.route('/api/v1.0/load_data/<tickers>')
+@app.route('/api/v1.0/load_data/<tickers>/<start>/<end>')
 def load_data(tickers,start='2020-01-01',end='2024-01-01'):
-    print(eval(tickers))
-    get_avg_sentiment_scores(eval(tickers))
+    print(tickers,start,end)
+    print('')
+    fetch_all_stock_data(eval(tickers),start,end)
     return '<h1>Data has been loaded to the Database</h1>'
 
-@app.route('/api/v1.0/stock_data')
+@app.route('/api/v1.0/stock_sentiment_score')
+def get_sentiment():
+    engine = create_engine('sqlite:///stock_market_analysis.sqlite')
+    session = Session(engine)
+
+    df1 = pd.DataFrame(session.execute(text('SELECT * FROM Average_Sentiment_Score')).all())
+
+    return df1.to_json(orient='columns')
+
+@app.route('/api/v1.0/stock_history')
 def get_data():
     engine = create_engine('sqlite:///stock_market_analysis.sqlite')
-    query = f"SELECT * FROM Average_Sentiment_Score"
     session = Session(engine)
-    return { k:v for k,v in session.execute(text('SELECT * FROM Average_Sentiment_Score')).all() }
+
+    df2 = pd.DataFrame(session.execute(text('SELECT * FROM stock_history')).all())
+    df2.Date = df2.Date.str.replace('\s.*','',regex=True)
+
+    return df2.to_json(orient='records')
+
     

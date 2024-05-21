@@ -12,6 +12,11 @@ nav {
     border-bottom: 2px solid black;
 }
 
+#container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 #chart01 {
     width: 45%;
 }
@@ -43,22 +48,22 @@ nav {
 }
 
 #filters {
-    width: 300px;
+    width: 20%;
     border-radius: 8px;
     margin: 5% auto;
     display: flex;
     flex-wrap: wrap;
-    /* height: 40vh; */
     border: 2px solid #000;
     padding: 10px;
     background: lightgray;
 }
 
 #stocks {
+    width: 50%;
     background: white;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 5px;
+    margin: 5% 10%;
     padding: 5px;
     justify-content: space-around;
 }

@@ -1,40 +1,58 @@
-Stock Market Analysis and Sentiment Tool
-
+Stock Market Trend Analysis Project
 Overview
-This tool is designed to analyze the stock market by fetching historical data, analyzing sentiment from news headlines, and performing various data operations. It also includes a Flask-based web server to interactively display analysis results through a web interface.
+This project explores stock market trends, leveraging data science techniques to analyze stock performances, sentiment analysis on financial news, and optimize investment portfolios. Focused on a select group of tickers (MSFT, CRM, CRWD, ZM, SHOP, AAPL), it aims to provide insights into their historical performance, market sentiment surrounding these companies, and strategies for portfolio optimization.
 
 Features
-Stock Data Retrieval: Leverage yfinance to download historical stock data.
-News Sentiment Analysis: Use requests and TextBlob to fetch and analyze sentiments from news headlines relevant to specified stock tickers.
-Database Management: Utilize SQLAlchemy to manage operations on a SQLite database, storing and retrieving stock and sentiment data efficiently.
-Data Visualization: Generate plots for stock trends and moving averages using matplotlib.
-Stock Price Prediction: Implement predictive analytics using a linear regression model trained on historical data.
-Interactive API: Offer a Flask-based web API for data fetching and visualization.
+Historical Price Analysis: Utilizes Yahoo Finance data to examine stock price trends over time.
+Sentiment Analysis: Applies NLP techniques to gauge the market sentiment from financial news and social media.
+Portfolio Optimization: Implements Modern Portfolio Theory (MPT) to identify the optimal asset allocation.
+Getting Started
+Prerequisites
+Ensure you have Python installed on your system, along with Jupyter Notebooks. This project also requires the following Python libraries: pandas, numpy, matplotlib, yfinance, scikit-learn, textblob.
+
+You can install these with the following command:
+
+sh
+Copy code
+pip install pandas numpy matplotlib yfinance scikit-learn textblob jupyter
 Installation
-Before installing, ensure you have Python installed on your system. Then, follow these steps:
+Clone this repository to your local machine to get started:
 
-Install Dependencies:
-bash
+sh
 Copy code
-pip install flask sqlalchemy yfinance requests textblob numpy pandas matplotlib
-Clone the Repository:
-bash
+git clone https://your-repository-url-here
+Navigate to the project directory and launch Jupyter Notebook:
+
+sh
 Copy code
-git clone https://github.com/44Jacob/FinDataTechAnalysis-.git
-Run the Application:
-Navigate to the project directory and execute:
-bash
-Copy code
-python app.py
+cd path/to/your/project
+jupyter notebook
+Open the Stock_Market_Trend_Analysis.ipynb notebook to view the project.
+
 Usage
-Once the server is running, you can access the API endpoints to interact with the system:
+The project is structured as a Jupyter Notebook consisting of various sections each dedicated to a specific part of the analysis:
 
-Load Data: GET /api/v1.0/load_data/<tickers> (Replace <tickers> with a list of stock tickers to fetch and analyze).
-Fetch Processed Data: GET /api/v1.0/stock_data (Retrieves and displays average sentiment scores and other analysis results).
+Data Collection: Fetches historical stock data using yfinance.
+Data Exploration and Visualization: Provides insights into stock performance over time.
+Sentiment Analysis: Analyzes sentiment from textual data and correlates it with stock prices.
+Portfolio Optimization: Demonstrates how to allocate assets to maximize returns for a given level of risk.
+Run each cell in the notebook from top to bottom to replicate the analysis.
 
+Contributing
+Contributions to this project are welcome. Please follow these steps to contribute:
+
+Fork the project repository.
+Create a new branch (git checkout -b feature/AmazingFeature).
+Commit your changes (git commit -m 'Add some AmazingFeature').
+Push to the branch (git push origin feature/AmazingFeature).
+Open a Pull Request.
 License
-This project is released under the MIT License. For more details, see the LICENSE file in the repository.
+Distributed under the MIT License. See LICENSE for more information.
 
-Contact
-Developer: Yakup Altinisik
-Email: jacob@goldenlightrealty.com
+Acknowledgments
+Data provided by Yahoo Finance via the yfinance library.
+Sentiment analysis powered by textblob.
+Portfolio optimization techniques inspired by Modern Portfolio Theory (MPT).
+
+
+

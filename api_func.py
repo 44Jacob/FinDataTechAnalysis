@@ -25,24 +25,48 @@ from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-def fetch_stock_data(ticker, start_date, end_date):
-    """
-    Fetches historical stock prices for the specified ticker within the given timeframe.
-    """
-    stock_data = yf.download(ticker, start=start_date, end=end_date)
-    return stock_data
 
-def fetch_all_stock_data(tickers, start_date, end_date):
+def get_avg_sentiment_scores(tickers):
+    textual_data = {}
+
+    for ticker in tickers:
+        headlines = fetch_news(api_key, ticker)
+        textual_data[ticker] = headlines
+
+    # Analyzing sentiment for each headline and averaging the scores
+    average_sentiment_scores = {}
+
+    for ticker, headlines in textual_data.items():
+        sentiments = [TextBlob(headline).sentiment.polarity if headline else 0 for headline in headlines]
+        average_sentiment_scores[ticker] = np.mean(sentiments)
+
+    # Extract tickers and sentiment scores
+    tickers = list(average_sentiment_scores.keys())
+    sentiment_scores = list(average_sentiment_scores.values())
+
+    print(tickers)
+
+    df = pd.DataFrame(sentiment_scores, tickers,['Average Sentiment Score'])
+    
+    load_data_to_db(df, 'Average_Sentiment_Score')
+
+def fetch_all_stock_data(tickers, start='2023-04-01', end='2024-04-01'):
+    
+    get_avg_sentiment_scores(tickers)
+
     stock_data = {}
     for ticker in tickers:
         print(f"Fetching data for {ticker}")
-        stock_data[ticker] = yf.download(ticker, start=start_date, end=end_date)
+        stock_data[ticker] = yf.download(ticker, start, end)
 
-    
+    for key in stock_data.keys():
+        stock_data[key]['Ticker'] = key
 
-    get_avg_sentiment_scores(tickers)
+    df = pd.concat(stock_data.values())
 
-    return '<h1>Data is now loaded in database!</h1>'
+    load_data_to_db(df, 'stock_history')
+
+    return '<h1>SQLite Database was updated</h1>'
 
 # Function to fetch headlines from NewsAPI
 def fetch_news(api_key, ticker):
@@ -69,36 +93,9 @@ def read_data(ticker):
     Reads the data for the specified ticker from the SQLite database.
     """
     engine = create_engine('sqlite:///stock_market_analysis.sqlite')
-    # engine = create_engine('sqlite:///stock_market_analysis.db')
     query = f"SELECT * FROM '{ticker}'"
     data = pd.read_sql_query(query, con=engine)
     return data
-
-def get_avg_sentiment_scores(tickers):
-    textual_data = {}
-    # tickers = ['MSFT', 'CRM', 'CRWD', 'ZM', 'SHOP', 'AAPL']
-
-    for ticker in tickers:
-        headlines = fetch_news(api_key, ticker)
-        textual_data[ticker] = headlines
-
-    # Analyzing sentiment for each headline and averaging the scores
-    average_sentiment_scores = {}
-
-    for ticker, headlines in textual_data.items():
-        sentiments = [TextBlob(headline).sentiment.polarity if headline else 0 for headline in headlines]
-        average_sentiment_scores[ticker] = np.mean(sentiments)
-
-    # Extract tickers and sentiment scores
-    tickers = list(average_sentiment_scores.keys())
-    sentiment_scores = list(average_sentiment_scores.values())
-
-    print(tickers)
-
-    df = pd.DataFrame(sentiment_scores, tickers,['Average Sentiment Score'])
-    
-    load_data_to_db(df, 'Average_Sentiment_Score')
-
 
 def calculate_daily_return(stock_data):
     """

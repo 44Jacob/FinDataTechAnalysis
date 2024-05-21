@@ -14,21 +14,20 @@
 
     <div id="container">
         <div id="filters">
-
-            <label for="tickers">Stocks To Analyze</label>
-            <input type="text" id="tickers">
+            <label for="selections">Stocks To Analyze</label>
+            <input type="text" id="selections" placeholder="MSFT,APPL">
 
             <label for="start">Start Date</label>
-            <input type="text" id="start">
+            <input type="text" id="start" placeholder="2024-01-01">
 
             <label for="end">End Date</label>
-            <input type="text" id="end">
-
+            <input type="text" id="end" placeholder="2024-03-30">
 
             <button onclick="stockSel()">Start</button>
-
-            <div id="stocks"></div>
         </div>
+
+        <div id="stocks"></div>
+
         <div id="charts">
             <div id="chart01"></div>
             <div id="chart02"></div>
