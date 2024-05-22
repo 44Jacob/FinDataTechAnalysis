@@ -43,12 +43,4 @@ def get_sentiment():
 
 @app.route('/api/v1.0/stock_history')
 def get_data():
-    engine = create_engine('sqlite:///stock_market_analysis.sqlite')
-    session = Session(engine)
-
-    df2 = pd.DataFrame(session.execute(text('SELECT * FROM stock_history')).all())
-    df2.Date = df2.Date.str.replace('\s.*','',regex=True)
-
-    return df2.to_json(orient='records')
-
-    
+    engine = create_engine('sq
