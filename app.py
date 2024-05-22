@@ -1,17 +1,25 @@
+import os
 import sqlite3
 import sqlalchemy
+import numpy as np
 import pandas as pd
 from config import api_key
-import numpy as np
 from textblob import TextBlob
 from sqlalchemy.orm import Session
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from flask import Flask, render_template, jsonify
 from api_func import get_avg_sentiment_scores, read_data, load_data_to_db, fetch_news, fetch_all_stock_data
 
-# get_avg_sentiment_scores()
-
 app = Flask(__name__)
+
+# get_avg_sentiment_scores()
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
+
+# Remove tracking modifications
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 @app.route('/')
 def homepage():

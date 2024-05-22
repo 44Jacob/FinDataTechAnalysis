@@ -1,30 +1,12 @@
-import nltk
 import requests
-import warnings
-from sqlalchemy import text
-from textblob import TextBlob
-from nltk.sentiment import SentimentIntensityAnalyzer
-
-# Data manipulation and analysis
 import numpy as np
 import pandas as pd
-from scipy.optimize import minimize
-from sqlalchemy.orm import sessionmaker
-import matplotlib.dates as mdates
-
-from datetime import datetime
-from datetime import timedelta
-
 import yfinance as yf
-
-from sqlalchemy import create_engine
-
 from config import api_key
-
-from sklearn.metrics import mean_squared_error
+from textblob import TextBlob
+from datetime import timedelta
+from sqlalchemy import create_engine
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-
 
 def get_avg_sentiment_scores(tickers):
     textual_data = {}
