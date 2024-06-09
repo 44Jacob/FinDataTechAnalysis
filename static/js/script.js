@@ -2,10 +2,10 @@ const init = async () => {
   sentiment = await (await fetch('/api/v1.0/stock_sentiment_score')).json()
   stock_hist = await (await fetch('/api/v1.0/stock_history')).json()
 
-  console.log(sentiment, stock_hist);
+  console.log(stock_hist);
 
-  tickers = Object.values(sentiment.index);
-  y_values = Object.values(sentiment['Average Sentiment Score'])
+  tickers = sentiment.map(obj=>obj.Ticker);
+  y_values = sentiment.map(obj=>obj['Sentiment Score'])
 
   document.getElementById('stocks').innerHTML = '';
   tickers.forEach(stock => {
@@ -30,28 +30,29 @@ const init = async () => {
     }
   };
 
-  var data = [trace1];
+  var data1 = [trace1];
 
   var layout = {
     title: '<b>Average Sentiment Report</b>',
     barmode: 'stack'
   };
 
-  Plotly.newPlot('chart01', data, layout);
+  Plotly.newPlot('chart01', data1, layout);
 
   // History
-  data = tickers.map(x => (
+  
+  data2 = tickers.map(x => (
     {
-      x: stock_hist.filter(obj => obj.Ticker == x).map(ticker => ticker.Date),
-      y: stock_hist.filter(obj => obj.Ticker == x).map(ticker => ticker.Close),
-      name: x,
+      x: stock_hist.filter(obj=>obj.Ticker==x).map(obj=>obj.Date),
+      y: stock_hist.filter(obj=>obj.Ticker==x).map(obj=>obj.Close),
+      name:x,
       type: 'scatter'
     }
   ))
 
-  Plotly.newPlot('chart02', data, { width: '100%' });
+  Plotly.newPlot('chart02', data2);
 
-
+  console.log('Data2: ',data2);
 };
 
 init();
@@ -68,3 +69,6 @@ async function stockSel() {
   await fetch(`/api/v1.0/load_data/${stocks}/${start.value}/${end.value}`);
   window.location.reload();
 };
+
+init();
+

@@ -6,7 +6,6 @@ from config import api_key
 from textblob import TextBlob
 from datetime import timedelta
 from sqlalchemy import create_engine
-from sklearn.linear_model import LinearRegression
 
 def get_avg_sentiment_scores(tickers):
     textual_data = {}
@@ -26,27 +25,26 @@ def get_avg_sentiment_scores(tickers):
     tickers = list(average_sentiment_scores.keys())
     sentiment_scores = list(average_sentiment_scores.values())
 
-    print(tickers)
-
-    df = pd.DataFrame(sentiment_scores, tickers,['Average Sentiment Score'])
-    
-    load_data_to_db(df, 'Average_Sentiment_Score')
+    df = pd.DataFrame({"Ticker": tickers, "Sentiment Score":sentiment_scores})
+    load_data_to_db(df, "Average_Sentiment_Score")
 
 def fetch_all_stock_data(tickers, start='2023-04-01', end='2024-04-01'):
+    engine = create_engine('sqlite:///stock_market_analysis.sqlite')
+
+    stock_data = {ticker: yf.download(ticker, start, end) for ticker in tickers}
+    
+    print('Stock Data: ',stock_data)
+
+    for ticker, df in stock_data.items():
+        df['Ticker'] = ticker
+
+    combined_df = pd.concat(stock_data.values())
+
+    print('Data to stock_history: ',combined_df)
+
+    combined_df.to_sql('stock_history', con=engine, if_exists='replace', index=True)
     
     get_avg_sentiment_scores(tickers)
-
-    stock_data = {}
-    for ticker in tickers:
-        print(f"Fetching data for {ticker}")
-        stock_data[ticker] = yf.download(ticker, start, end)
-
-    for key in stock_data.keys():
-        stock_data[key]['Ticker'] = key
-
-    df = pd.concat(stock_data.values())
-
-    load_data_to_db(df, 'stock_history')
 
     return '<h1>SQLite Database was updated</h1>'
 
@@ -118,21 +116,6 @@ def predict_monthly_prices(model, last_known_price, last_known_date, months=36):
         future_dates.append(last_known_date)
     
     return future_dates, future_prices
-
-def train_model_for_ticker(ticker_data):
-    """
-    Trains a LinearRegression model for the given ticker data.
-    """
-    data = ticker_data[['Close']].copy()
-    data['Previous Close'] = data['Close'].shift(1)
-    data.dropna(inplace=True)  # Drop the first row which now contains NaN
-
-    X = data[['Previous Close']]  # Features
-    y = data['Close']  # Target
-
-    model = LinearRegression()
-    model.fit(X, y)  # Training the model
-    return model
 
 # Objective Function (Negative Sharpe Ratio)
 def neg_sharpe_ratio(weights, expected_returns, cov_matrix, risk_free_rate=0.01):
