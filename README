@@ -1,98 +1,42 @@
-Summary: Flask Application for Stock Analysis
-This project focuses on developing a Flask application to analyze stock data and provide insights using Python, SQLAlchemy, and machine learning techniques.
+# FinDataTechAnalysis
+![MIT](https://img.shields.io/badge/License-MIT-blue)
 
-Project Setup:
-Created a virtual environment named finenv.
-Installed essential packages: Flask, SQLAlchemy, NumPy, Pandas, yFinance, TextBlob, scikit-learn, nltk, requests, and other necessary libraries.
+## Website: 
+[website](https://github.com/44Jacob/FinDataTechAnalysis)
 
-Application Structure:
+## Description
+After providing a list of stocks and start and end date, we can obtain stocks history information and public sentiment about the companies with the idea of providing enough information to accurately predict direction of stock value. 
 
-app.py: The core of the Flask application, setting up the web framework and routes.
-config.py: Contains configuration variables, including the API key.
-api_functions.ipynb: Holds custom functions for data fetching and processing.
+![app_image](mockup.png)
 
-Main Flask Application (app.py):
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Credits](#credits)
+- [License](#license)
+- [Features](#features)
+- [Tests](#tests)
+- [Contact](#contact)
 
-Imports a variety of libraries for data analysis, sentiment analysis, machine learning, and visualization.
-Sets up the Flask application and configures SQLAlchemy for database interactions.
-Defines a simple home route.
+## Installation
+SQLite3, SQLAlchemy, numpy, pandas, TEXTBlob, Flask, html, javascript, css, plotly
 
-Configuration File (config.py):
-Stores the API key and other configuration settings.
+## Usage
+Provide a list of stocks, start and end date, and click start.
 
-API Functions (api_functions.ipynb):
-Includes functions like get_avg_sentiment_scores, read_data, load_data_to_db, fetch_news, and fetch_all_stock_data to handle data operations and analysis.
+## Credits
+Yakup Altinisik
 
-Data Processing and Analysis:
+## License
+MIT
 
-Fetches stock data using yFinance.
-Interacts with the database using SQLAlchemy.
-Performs sentiment analysis with TextBlob and NLTK's SentimentIntensityAnalyzer.
-Uses NumPy and Pandas for data manipulation and analysis.
-Utilizes scikit-learn for machine learning tasks such as linear regression, model evaluation, and data splitting.
-Visualizes data and analysis results using Matplotlib and Seaborn.
+## Features
+It provides two charts, one based on business sentiment and the other based on stock history.
 
-Running the Application:
-Activate the virtual environment:
+## Tests
+Confirm charts display once you click start.
 
-sh
-Copy code
-source /Users/yakupaltinisik/anaconda3/envs/finenv/bin/activate
-Run the Flask application:
-
-sh
-Copy code
-flask run
-
-Demonstration:
-
-Live demonstration of the application, showing how to fetch stock data, perform sentiment analysis, and predict stock prices.
-Visualization of stock trends and sentiment analysis results.
-
-Conclusion:
-Developed a comprehensive Flask application for stock analysis.
-Integrated various Python libraries for data fetching, processing, sentiment analysis, and machine learning.
-Utilized powerful visualization tools to present data insights effectively.
-Potential future improvements include more advanced models and a more interactive user interface.
-
-Note on Running api_functions.ipynb:
-To run the Flask application within your Jupyter notebook (api_functions.ipynb), you can include the Flask setup in a cell within the notebook. However, it's generally better practice to keep your Flask app configuration in a separate Python script (app.py).
-
-Example Flask Setup in api_functions.ipynb:
-python
-Copy code
-# In a cell within api_functions.ipynb
-
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Hello, Flask with SQLAlchemy!"
-
-if __name__ == '__main__':
-    app.run(debug=True)
-Recommended Approach:
-Organize Flask App in app.py:
-
-Keep the Flask setup in app.py and use the notebook for analysis tasks.
-Run Flask from Terminal:
-
-Run the Flask application using flask run from the terminal while your virtual environment (finenv) is activated.
-By following these steps and the provided summary, you should be able to present your Flask application for stock analysis effectively.
-
-
-Here's the file "Screenshot 2024-06-10 at 8.31.48 PM.pdf" for your review.
-https://acrobat.adobe.com/id/urn:aaid:sc:va6c2:6ab887f9-139d-4d65-8d6f-1fb8841fc2ff
-
-Here's the file "Screenshot 2024-06-10 at 8.59.50 PM.pdf" for your review.
-https://acrobat.adobe.com/id/urn:aaid:sc:VA6C2:b935fe03-84a7-416e-9854-971342b9126c
-
-Here's the file "Screenshot 2024-06-10 at 9.27.04 PM.pdf" for your review.
-https://acrobat.adobe.com/id/urn:aaid:sc:VA6C2:8a669b71-ccb2-4132-b51f-755aa6795707
-
-Here's the file "Screenshot 2024-06-10 at 9.36.54 PM.pdf" for your review.
-https://acrobat.adobe.com/id/urn:aaid:sc:VA6C2:848b2a00-809f-4b8e-bbc7-3e955212aba3
-
-Add your comments and collaborate with others in real time. You don't need to download Acrobat to access the file.
+## Contact
+If there are any questions of concerns, I can be reached at:
+##### [github: 44Jacob](https://github.com/44Jacob)
+##### [email: jacob@goldenlightrealty.com](mailto:jacob@goldenlightrealty.com)
